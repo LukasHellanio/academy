@@ -1,6 +1,1 @@
-{
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
-  }
-}
+{"firestore":{"rules":"firestore.rules","indexes":"firestore.indexes.json"},"flutter":{"platforms":{"android":{"default":{"projectId":"encora-community-app","appId":"1:752694225568:android:8fb0b360658bd6b2a2f7c5","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"encora-community-app","configurations":{"android":"1:752694225568:android:8fb0b360658bd6b2a2f7c5","ios":"1:752694225568:ios:77a461c834cf71d4a2f7c5","macos":"1:752694225568:ios:77a461c834cf71d4a2f7c5","web":"1:752694225568:web:e34ee9d29106ef1ca2f7c5","windows":"1:752694225568:web:1c5b023eb4535128a2f7c5"}}}}}}
