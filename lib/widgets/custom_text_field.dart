@@ -43,7 +43,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 )
                 : null,
       ),
-      obscureText: !(_isPasswordVisible),
+      obscureText:
+          widget.label.toLowerCase().contains("password")
+              ? !_isPasswordVisible
+              : false,
       validator: widget.validator ?? (value) => null,
       style: TextStyle(color: Colors.black),
     );

@@ -46,7 +46,6 @@ class LoginForm extends StatelessWidget {
           CustomTextField(
             controller: passwordController,
             label: 'Password',
-            obscureText: true,
             validator: Validators.validatePassword,
           ),
           const SizedBox(height: 24),

@@ -1,6 +1,7 @@
 // lib/pages/login/login_page.dart
 
 import 'package:encora_community/core/utils/global.dart';
+import 'package:encora_community/core/utils/toast_utils.dart';
 import 'package:encora_community/services/auth_service.dart';
 import 'package:encora_community/widgets/login_form.dart';
 import 'package:encora_community/services/firestore_service.dart';
@@ -35,23 +36,24 @@ class _LoginPageState extends State<LoginPage> {
         if (userType != null) {
           // Save user type in global variable
           currentUserType = userType;
-
           // Navigate to pseudo-home (placeholder for now)
           if (context.mounted) {
-            Navigator.pushReplacement(
+            Navigator.pushReplacementNamed(
               context,
-              MaterialPageRoute(
-                builder: (_) => const Placeholder(),
-              ), // substitua depois pela sua HomePage
+              '/home', // Substitua pelo nome da rota desejada
             );
           }
         } else {
-          print('User type not found in Firestore.');
+          showCustomToast(
+            context,
+            'User type not found in Firestore.',
+            "warning",
+          );
         }
       }
     } catch (e) {
       // Display error message if login fails
-      print('Login error: $e');
+      showCustomToast(context, 'Login error: $e', "warning");
     }
   }
 
