@@ -1,4 +1,4 @@
-import 'package:encora_community/pages/login/login.dart';
+import 'package:encora_community/pages/login/login_page.dart';
 import 'package:encora_community/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +49,7 @@ class _SplashPageState extends State<SplashPage> {
             child: Center(
               child:
                   _showLogingButton
-                      ? CustomLoginButton(
+                      ? CustomButton(
                         onPressed: _goToLoginPage,
                         label: 'Login',
                         icon: Icons.login,

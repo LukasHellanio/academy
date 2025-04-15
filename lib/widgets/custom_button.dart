@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomLoginButton extends StatelessWidget {
+class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String label;
   final IconData? icon;
@@ -8,7 +8,7 @@ class CustomLoginButton extends StatelessWidget {
   final TextStyle? textStyle;
   final Color? iconColor;
 
-  const CustomLoginButton({
+  const CustomButton({
     super.key,
     required this.onPressed,
     required this.label,
