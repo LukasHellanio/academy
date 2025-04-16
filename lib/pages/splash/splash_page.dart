@@ -49,26 +49,53 @@ class _SplashPageState extends State<SplashPage> {
             child: Center(
               child:
                   _showLogingButton
-                      ? CustomButton(
-                        onPressed: _goToLoginPage,
-                        label: 'Login',
-                        icon: Icons.login,
-                        iconColor: Colors.black,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: theme.primaryColor,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 30,
-                            vertical: 12,
+                      ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomButton(
+                            onPressed: _goToLoginPage,
+                            label: 'Login',
+                            icon: Icons.login,
+                            iconColor: Colors.black,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: theme.primaryColor,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 30,
+                                vertical: 12,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
+                          SizedBox(width: 20),
+                          CustomButton(
+                            onPressed: () => (),
+                            label: 'Sign Up',
+                            icon: Icons.person_add,
+                            iconColor: Colors.black,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: theme.primaryColor,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 30,
+                                vertical: 12,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                            textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                        textStyle: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        ],
                       )
                       : const CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),

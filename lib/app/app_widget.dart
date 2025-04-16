@@ -13,7 +13,7 @@ class AppWidget extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      initialRoute: '/login',
+      initialRoute: '/',
       routes: appRoutes,
     );
   }

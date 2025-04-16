@@ -1,10 +1,8 @@
 // lib/pages/login/login_page.dart
 
-import 'package:encora_community/core/utils/global.dart';
 import 'package:encora_community/core/utils/toast_utils.dart';
 import 'package:encora_community/services/auth_service.dart';
 import 'package:encora_community/widgets/login_form.dart';
-import 'package:encora_community/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -17,7 +15,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthService _authService = AuthService();
-  final FirestoreService _firestoreService = FirestoreService();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -30,26 +27,12 @@ class _LoginPageState extends State<LoginPage> {
       final user = await _authService.loginWithEmail(email, password);
 
       if (user != null) {
-        // Fetch user type from Firestore
-        final userType = await _firestoreService.getUserType(user.uid);
-
-        if (userType != null) {
-          // Save user type in global variable
-          currentUserType = userType;
-          // Navigate to pseudo-home (placeholder for now)
-          if (context.mounted) {
-            Navigator.pushReplacementNamed(
-              context,
-              '/home', // Substitua pelo nome da rota desejada
-            );
-          }
-        } else {
-          showCustomToast(
-            context,
-            'User type not found in Firestore.',
-            "warning",
-          );
+        // AuthService already searches for data and stores it globally
+        if (context.mounted) {
+          Navigator.pushReplacementNamed(context, '/home');
         }
+      } else {
+        showCustomToast(context, 'User not found.', "warning");
       }
     } catch (e) {
       // Display error message if login fails
