@@ -1,5 +1,5 @@
-import 'package:encora_community/core/utils/global.dart';
 import 'package:encora_community/pages/dashboard/dashboard_page.dart';
+import 'package:encora_community/pages/managers/managers_page.dart';
 import 'package:flutter/material.dart';
 import 'package:encora_community/widgets/drawer_options.dart';
 import 'package:encora_community/widgets/bottom_nav_items.dart';
@@ -16,15 +16,14 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = const [
     DashboardPage(),
-    Center(child: Text('Managers Page')),
-    Center(child: Text('Permissions Page')),
-    Center(child: Text('Notifications')),
+    ManagersPage(),
+    Center(child: Text('Calendar Page')),
+    Center(child: Text('Permissions')),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      print(currentUserData); // RETIRAR
     });
   }
 

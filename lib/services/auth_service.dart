@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:encora_community/services/firestore_service.dart'; // Importando o FirestoreService
-import 'package:encora_community/core/utils/global.dart'; // Importando a variável global
+import 'package:encora_community/services/firestore_service.dart';
+import 'package:encora_community/core/utils/global.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirestoreService _firestoreService = FirestoreService();
 
-  // Função para logar o usuário com email e senha
+  // Function to log in the user with email and password
   Future<User?> loginWithEmail(String email, String password) async {
     try {
       final userCredential = await _auth.signInWithEmailAndPassword(
@@ -17,12 +17,12 @@ class AuthService {
       final user = userCredential.user;
 
       if (user != null) {
-        // Buscar dados do usuário no Firestore
+        // Fetch user data from Firestore
         final userData = await _firestoreService.getUserData(user.uid);
 
         if (userData != null) {
-          // Salvar os dados do usuário como um JSON (Map)
-          currentUserData = userData; // Salvando os dados do usuário no Map
+          // Save user data as a JSON (Map)
+          currentUserData = userData;
         }
         return user;
       }

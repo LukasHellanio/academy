@@ -4,10 +4,10 @@ class BottomNavItems {
   static List<BottomNavigationBarItem> get items => const [
     BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
     BottomNavigationBarItem(icon: Icon(Icons.group), label: 'Managers'),
-    BottomNavigationBarItem(icon: Icon(Icons.security), label: 'Permissions'),
     BottomNavigationBarItem(
-      icon: Icon(Icons.notifications),
-      label: 'Notifications',
+      icon: Icon(Icons.calendar_month),
+      label: 'Calendar',
     ),
+    BottomNavigationBarItem(icon: Icon(Icons.security), label: 'Permissions'),
   ];
 }

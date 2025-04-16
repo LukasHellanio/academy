@@ -1,5 +1,12 @@
+// lib/pages/dashboard/dashboard_page.dart
+
+import 'package:encora_community/models/user_header_model.dart';
+import 'package:encora_community/widgets/cards/card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:encora_community/widgets/app_header.dart';
+import 'package:encora_community/widgets/cards/stat_card.dart';
+import 'package:encora_community/widgets/cards/highlight_card.dart';
+import 'package:encora_community/data/mock_activities.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -8,12 +15,18 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    final mockManager = UserHeaderModel(
+      name: 'Lucas Hellanio',
+      avatarUrl: 'https://avatars.githubusercontent.com/u/31229434?v=4',
+      description: 'Admin',
+    );
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const AppHeader(),
+          AppHeader(user: mockManager),
           const SizedBox(height: 30),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -29,84 +42,40 @@ class DashboardPage extends StatelessWidget {
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildStatCard(
-                  context,
-                  icon: Icons.group,
-                  label: 'Managers',
-                  value: '12',
-                ),
-                _buildStatCard(
-                  context,
+            child: Wrap(
+              spacing: 20,
+              runSpacing: 20,
+              children: const [
+                StatCard(icon: Icons.group, label: 'Managers', value: '12'),
+                StatCard(
                   icon: Icons.lock_open,
                   label: 'Permissions',
                   value: '24',
+                ),
+                StatCard(
+                  icon: Icons.calendar_month,
+                  label: 'Events',
+                  value: '5',
+                ),
+                StatCard(
+                  icon: Icons.notifications,
+                  label: 'Notifications',
+                  value: '8',
                 ),
               ],
             ),
           ),
           const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
-            child: _buildHighlightCard(context),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatCard(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-    required String value,
-  }) {
-    final theme = Theme.of(context);
-    return Container(
-      width: MediaQuery.of(context).size.width / 2 - 40,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: theme.primaryColor.withValues(alpha: (0.01 * 255).toDouble()),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, size: 32, color: theme.primaryColor),
-          const SizedBox(height: 10),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: theme.primaryColor,
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: HighlightCard(
+              icon: Icons.info_outline,
+              description:
+                  'Remember to check your permissions and update managers weekly.',
             ),
           ),
-          Text(label, style: const TextStyle(fontSize: 14)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildHighlightCard(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: theme.primaryColor.withValues(alpha: (0.01 * 255).toDouble()),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: [
-          Icon(Icons.info_outline, size: 30, color: theme.primaryColor),
-          const SizedBox(width: 20),
-          const Expanded(
-            child: Text(
-              'Remember to check your permissions and update managers weekly.',
-              style: TextStyle(fontSize: 14),
-            ),
-          ),
+          const SizedBox(height: 20),
+          Expanded(child: CardList(items: mockActivities)),
         ],
       ),
     );
