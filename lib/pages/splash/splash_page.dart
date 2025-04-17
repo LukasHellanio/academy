@@ -37,9 +37,19 @@ class _SplashPageState extends State<SplashPage> {
       color: theme.primaryColor, // Background color for the splash screen
       child: Stack(
         children: [
-          // Centered icon
-          const Center(
-            child: Icon(Icons.menu_book, color: Colors.white, size: 100),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center, // Vertical alignment
+              crossAxisAlignment:
+                  CrossAxisAlignment.center, // Horizontal alignment
+              children: [
+                Icon(Icons.menu_book, color: Colors.white, size: 100),
+                // const Text(
+                //   'Encora Academy',
+                //   style: TextStyle(color: Colors.white, fontSize: 20),
+                // ),
+              ],
+            ),
           ),
           // Positioned widget: either loading or button
           Positioned(

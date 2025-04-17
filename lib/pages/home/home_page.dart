@@ -1,3 +1,4 @@
+import 'package:encora_community/pages/calendar/calendar_page.dart';
 import 'package:encora_community/pages/dashboard/dashboard_page.dart';
 import 'package:encora_community/pages/managers/managers_page.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = const [
     DashboardPage(),
     ManagersPage(),
-    Center(child: Text('Calendar Page')),
+    CalendarPage(),
     Center(child: Text('Permissions')),
   ];
 
