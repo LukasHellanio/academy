@@ -1,4 +1,4 @@
-import 'package:encora_community/data/mock_managers.dart';
+import 'package:encora_community/data/mock/mock_managers.dart';
 import 'package:encora_community/widgets/cards/card_list.dart';
 import 'package:flutter/material.dart';
 

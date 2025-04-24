@@ -1,4 +1,4 @@
-import '../../models/card_item_model.dart';
+import '../models/card_item_model.dart';
 import 'package:flutter/material.dart';
 
 final List<CardItemModel> mockManagers = [

@@ -1,4 +1,4 @@
-import 'package:encora_community/pages/login/login_page.dart';
+import 'package:encora_community/pages/splash/splash_controller.dart';
 import 'package:encora_community/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
@@ -10,23 +10,22 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  bool _showLogingButton = false;
+  final SplashController _controller = SplashController();
+  bool _showLoginButtons = false;
 
   @override
   void initState() {
     super.initState();
-    // Wait for 2 seconds, then show the login button instead of loading
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        _showLogingButton = true;
-      });
-    });
+    _initSplash();
   }
 
-  void _goToLoginPage() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const LoginPage()),
-    );
+  Future<void> _initSplash() async {
+    final success = await _controller.checkLogin(context);
+    if (!success && mounted) {
+      setState(() {
+        _showLoginButtons = true;
+      });
+    }
   }
 
   @override
@@ -34,36 +33,37 @@ class _SplashPageState extends State<SplashPage> {
     final theme = Theme.of(context);
 
     return Container(
-      color: theme.primaryColor, // Background color for the splash screen
+      color: theme.primaryColor,
       child: Stack(
         children: [
           Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center, // Vertical alignment
-              crossAxisAlignment:
-                  CrossAxisAlignment.center, // Horizontal alignment
-              children: [
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
                 Icon(Icons.menu_book, color: Colors.white, size: 100),
-                // const Text(
-                //   'Encora Academy',
-                //   style: TextStyle(color: Colors.white, fontSize: 20),
-                // ),
+                Text(
+                  'Encora Academy',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
               ],
             ),
           ),
-          // Positioned widget: either loading or button
           Positioned(
             bottom: 80,
             left: 0,
             right: 0,
             child: Center(
               child:
-                  _showLogingButton
+                  _showLoginButtons
                       ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CustomButton(
-                            onPressed: _goToLoginPage,
+                            onPressed: () => _controller.goToLoginPage(context),
                             label: 'Login',
                             icon: Icons.login,
                             iconColor: Colors.black,
@@ -83,9 +83,10 @@ class _SplashPageState extends State<SplashPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 20),
+                          const SizedBox(width: 20),
                           CustomButton(
-                            onPressed: () => (),
+                            onPressed:
+                                () => _controller.goToRegisterPage(context),
                             label: 'Sign Up',
                             icon: Icons.person_add,
                             iconColor: Colors.black,

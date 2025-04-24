@@ -1,12 +1,12 @@
-// lib/pages/dashboard/dashboard_page.dart
-
-import 'package:encora_community/models/user_header_model.dart';
-import 'package:encora_community/widgets/cards/card_list.dart';
-import 'package:flutter/material.dart';
+import 'package:encora_community/data/mock/mock_activities.dart';
+import 'package:encora_community/data/models/user_header_model.dart';
+import 'package:encora_community/providers/user_provider.dart';
 import 'package:encora_community/widgets/app_header.dart';
-import 'package:encora_community/widgets/cards/stat_card.dart';
+import 'package:encora_community/widgets/cards/card_list.dart';
 import 'package:encora_community/widgets/cards/highlight_card.dart';
-import 'package:encora_community/data/mock_activities.dart';
+import 'package:encora_community/widgets/cards/stat_card.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -14,11 +14,12 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final userProvider = Provider.of<UserProvider>(context);
 
-    final mockManager = UserHeaderModel(
-      name: 'Lucas Hellanio',
-      avatarUrl: 'https://avatars.githubusercontent.com/u/31229434?v=4',
-      description: 'Admin',
+    final user = UserHeaderModel(
+      name: userProvider.name ?? 'Guest',
+      avatarUrl: userProvider.avatarUrl ?? '',
+      description: userProvider.userType ?? 'Unknown',
     );
 
     return Scaffold(
@@ -26,7 +27,7 @@ class DashboardPage extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppHeader(user: mockManager),
+          AppHeader(user: user),
           const SizedBox(height: 30),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),

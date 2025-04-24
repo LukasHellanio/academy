@@ -1,7 +1,7 @@
 // lib/pages/login/login_page.dart
 
 import 'package:encora_community/core/utils/toast_utils.dart';
-import 'package:encora_community/services/auth_service.dart';
+import 'package:encora_community/data/services/auth_service.dart';
 import 'package:encora_community/widgets/login_form.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       // Calling Firebase Auth login
-      final user = await _authService.loginWithEmail(email, password);
+      final user = await _authService.loginWithEmail(context, email, password);
 
       if (user != null) {
         // AuthService already searches for data and stores it globally

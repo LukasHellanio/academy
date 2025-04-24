@@ -1,11 +1,9 @@
-// lib/widgets/login_form.dart
-
 import 'package:encora_community/widgets/custom_button.dart';
 import 'package:encora_community/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:encora_community/core/utils/validators.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController emailController;
   final TextEditingController passwordController;
@@ -20,15 +18,22 @@ class LoginForm extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  bool _obscurePassword = true;
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Form(
-      key: formKey,
+      key: widget.formKey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
+          const Text(
             'Login',
             style: TextStyle(
               color: Colors.black,
@@ -38,21 +43,33 @@ class LoginForm extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           CustomTextField(
-            controller: emailController,
+            controller: widget.emailController,
             label: 'Email',
             validator: Validators.validateEmail,
           ),
           const SizedBox(height: 16),
           CustomTextField(
-            controller: passwordController,
+            controller: widget.passwordController,
             label: 'Password',
             validator: Validators.validatePassword,
+            obscureText: _obscurePassword,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                color: theme.primaryColorDark,
+              ),
+              onPressed: () {
+                setState(() {
+                  _obscurePassword = !_obscurePassword;
+                });
+              },
+            ),
           ),
           const SizedBox(height: 24),
           SizedBox(
             width: MediaQuery.of(context).size.height * 0.5,
             child: CustomButton(
-              onPressed: () => onSubmit(),
+              onPressed: () => widget.onSubmit(),
               label: 'Login',
               style: ElevatedButton.styleFrom(
                 backgroundColor: theme.colorScheme.primary,
@@ -60,6 +77,15 @@ class LoginForm extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 14),
               ),
             ),
+          ),
+          const SizedBox(height: 12),
+          TextButton(
+            onPressed: () {
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil('/', (route) => false);
+            },
+            child: const Text('Back to Welcome'),
           ),
         ],
       ),

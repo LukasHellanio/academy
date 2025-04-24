@@ -1,4 +1,4 @@
-import 'package:encora_community/models/expandable_card_model.dart';
+import 'package:encora_community/data/models/expandable_card_model.dart';
 import 'package:flutter/material.dart';
 
 final List<ExpandableCardModel> mockExpandableCards = [

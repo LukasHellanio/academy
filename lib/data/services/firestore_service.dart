@@ -18,4 +18,25 @@ class FirestoreService {
       return null;
     }
   }
+
+  Future<void> createUserData({
+    required String uid,
+    required String name,
+    required String email,
+    required String avatarUrl,
+    required String userType,
+  }) async {
+    try {
+      await _firestore.collection('users').doc(uid).set({
+        'name': name,
+        'email': email,
+        'avatarUrl': avatarUrl,
+        'type': userType,
+        'createdAt': Timestamp.now(),
+      });
+    } catch (e) {
+      print('Error creating user data: $e');
+      throw Exception('Failed to save user data.');
+    }
+  }
 }

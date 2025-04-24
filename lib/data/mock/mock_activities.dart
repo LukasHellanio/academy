@@ -1,4 +1,4 @@
-import '../../models/card_item_model.dart';
+import '../models/card_item_model.dart';
 
 final List<CardItemModel> mockActivities = [
   CardItemModel(

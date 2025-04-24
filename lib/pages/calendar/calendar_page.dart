@@ -83,8 +83,8 @@ class _CalendarPageState extends State<CalendarPage> {
                     ),
                     child: Center(
                       child: Text(
-                        '${day.day}',
-                        style: TextStyle(color: Colors.white),
+                        'TMA meet',
+                        style: TextStyle(color: Colors.white, fontSize: 10),
                       ),
                     ),
                   );

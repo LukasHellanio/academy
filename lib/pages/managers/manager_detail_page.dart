@@ -1,8 +1,8 @@
-import 'package:encora_community/data/mock_expandable_cards.dart';
-import 'package:encora_community/widgets/cards/expandable_card';
+import 'package:encora_community/data/mock/mock_expandable_cards.dart';
+import 'package:encora_community/widgets/cards/expandable_card.dart';
 import 'package:flutter/material.dart';
 import 'package:encora_community/widgets/app_header.dart';
-import 'package:encora_community/models/user_header_model.dart';
+import 'package:encora_community/data/models/user_header_model.dart';
 
 class ManagerDetailPage extends StatelessWidget {
   const ManagerDetailPage({super.key});
@@ -35,14 +35,17 @@ class ManagerDetailPage extends StatelessWidget {
               child: AppHeader(user: mockManager),
             ),
             const SizedBox(height: 20),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: mockExpandableCards.length,
-              itemBuilder: (context, index) {
-                final card = mockExpandableCards[index];
-                return ExpandableCard(card: card);
-              },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: mockExpandableCards.length,
+                itemBuilder: (context, index) {
+                  final card = mockExpandableCards[index];
+                  return ExpandableCard(card: card);
+                },
+              ),
             ),
           ],
         ),

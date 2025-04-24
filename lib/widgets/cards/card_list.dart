@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../models/card_item_model.dart';
+import '../../data/models/card_item_model.dart';
 
 class CardList extends StatelessWidget {
   final List<CardItemModel> items;

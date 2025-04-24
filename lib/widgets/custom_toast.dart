@@ -22,6 +22,10 @@ class CustomToast extends StatelessWidget {
         bgColor = Colors.blue[300]!;
         textColor = Colors.white;
         break;
+      case 'sucess':
+        bgColor = Colors.green[300]!;
+        textColor = Colors.white;
+        break;
       case 'warning':
         bgColor = Colors.amber[300]!;
         textColor = Colors.black;

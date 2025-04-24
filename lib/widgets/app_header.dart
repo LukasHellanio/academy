@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../models/user_header_model.dart';
+import '../data/models/user_header_model.dart';
 
 class AppHeader extends StatelessWidget {
   final UserHeaderModel user;
@@ -19,13 +19,21 @@ class AppHeader extends StatelessWidget {
           Expanded(
             child: Row(
               children: [
+                // Check if avatarUrl is not empty
                 ClipOval(
-                  child: Image.network(
-                    user.avatarUrl,
-                    width: 70,
-                    height: 70,
-                    fit: BoxFit.cover,
-                  ),
+                  child:
+                      user.avatarUrl.isNotEmpty
+                          ? Image.network(
+                            user.avatarUrl,
+                            width: 70,
+                            height: 70,
+                            fit: BoxFit.cover,
+                          )
+                          : Icon(
+                            Icons.account_circle,
+                            size: 70,
+                            color: theme.primaryColor,
+                          ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
