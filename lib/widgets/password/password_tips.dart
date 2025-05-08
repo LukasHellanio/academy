@@ -1,6 +1,6 @@
 // widgets/password_tips.dart
 import 'package:flutter/material.dart';
-import '../core/utils/password_utils.dart';
+import '../../core/utils/password_utils.dart';
 
 class PasswordTips extends StatelessWidget {
   final String password;

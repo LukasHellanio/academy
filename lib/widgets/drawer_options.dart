@@ -1,5 +1,5 @@
 import 'package:encora_community/core/utils/toast_utils.dart';
-import 'package:encora_community/widgets/modal.dart';
+import 'package:encora_community/widgets/modais/modal.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

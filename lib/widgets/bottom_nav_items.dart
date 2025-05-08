@@ -8,6 +8,6 @@ class BottomNavItems {
       icon: Icon(Icons.calendar_month),
       label: 'Calendar',
     ),
-    BottomNavigationBarItem(icon: Icon(Icons.security), label: 'Permissions'),
+    BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Map'),
   ];
 }

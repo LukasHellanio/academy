@@ -1,16 +1,13 @@
-import 'package:encora_community/providers/user_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:encora_community/data/services/firestore_service.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:encora_community/data/models/user_header_model.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirestoreService _firestoreService = FirestoreService();
 
-  // Function to log in the user with email and password
-  Future<User?> loginWithEmail(
-    BuildContext context,
+  // Login with email and password
+  Future<Map<String, dynamic>?> loginWithEmail(
     String email,
     String password,
   ) async {
@@ -23,23 +20,8 @@ class AuthService {
       final user = userCredential.user;
 
       if (user != null) {
-        // Fetch user data from Firestore
-        final userData = await _firestoreService.getUserData(user.uid);
-
-        if (userData != null) {
-          final userProvider = Provider.of<UserProvider>(
-            context,
-            listen: false,
-          );
-          userProvider.setUser(
-            name: userData['name'],
-            email: userData['email'],
-            avatarUrl: userData['avatarUrl'],
-            userType: userData['type'],
-          );
-        }
-
-        return user;
+        final userData = await _firestoreService.getUserData(user.uid) ?? {};
+        return {'uid': user.uid, ...userData};
       }
 
       return null;
@@ -48,21 +30,41 @@ class AuthService {
     }
   }
 
-  String _handleFirebaseError(FirebaseAuthException e) {
-    switch (e.code) {
-      case 'user-not-found':
-        return 'No user found with this email.';
-      case 'wrong-password':
-        return 'Incorrect password.';
-      case 'invalid-email':
-        return 'Invalid email address.';
-      default:
-        return 'Login failed. Please try again.';
+  Future<bool> isUserLoggedIn() async {
+    final user = _auth.currentUser;
+    return user != null;
+  }
+
+  // Get current user's UID
+  String getCurrentUserId() {
+    final user = _auth.currentUser;
+    if (user != null) {
+      return user.uid;
+    } else {
+      throw Exception('No user is currently logged in.');
     }
   }
 
-  Future<User?> registerUser({
-    required BuildContext context,
+  Future<UserHeaderModel?> getLoggedUser() async {
+    final user = _auth.currentUser;
+
+    if (user != null) {
+      final userData = await _firestoreService.getUserData(user.uid);
+
+      if (userData != null) {
+        return UserHeaderModel(
+          name: userData['name'] ?? 'Guest',
+          avatarUrl: userData['avatarUrl'] ?? '',
+          description: userData['userType'] ?? 'Unknown',
+        );
+      }
+    }
+
+    return null;
+  }
+
+  // Register a new user
+  Future<Map<String, dynamic>?> registerUser({
     required String name,
     required String email,
     required String password,
@@ -86,19 +88,43 @@ class AuthService {
           userType: userType,
         );
 
-        Provider.of<UserProvider>(context, listen: false).setUser(
-          name: name,
-          email: email,
-          avatarUrl: avatarUrl,
-          userType: userType,
-        );
-
-        return user;
+        return {
+          'uid': user.uid,
+          'name': name,
+          'email': email,
+          'avatarUrl': avatarUrl,
+          'userType': userType,
+        };
       }
 
       return null;
     } on FirebaseAuthException catch (e) {
       throw Exception(_handleFirebaseError(e));
+    }
+  }
+
+  String _handleFirebaseError(FirebaseAuthException e) {
+    switch (e.code) {
+      case 'user-not-found':
+        return 'No user found with this email.';
+      case 'wrong-password':
+        return 'Incorrect password.';
+      case 'invalid-email':
+        return 'Invalid email address.';
+      case 'email-already-in-use':
+        return 'This email is already in use.';
+      case 'weak-password':
+        return 'The password is too weak.';
+      default:
+        return 'Authentication failed. Please try again.';
+    }
+  }
+
+  Future<void> logout() async {
+    try {
+      await _auth.signOut();
+    } catch (e) {
+      throw Exception('Logout failed: $e');
     }
   }
 }

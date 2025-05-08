@@ -1,4 +1,4 @@
-import 'package:encora_community/widgets/custom_button.dart';
+import 'package:encora_community/widgets/buttons/custom_button.dart';
 import 'package:encora_community/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:encora_community/core/utils/validators.dart';

@@ -1,46 +1,39 @@
-import 'package:encora_community/pages/register/register_controller.dart';
-import 'package:encora_community/widgets/custom_button.dart';
-import 'package:encora_community/widgets/custom_text_field.dart';
-import 'package:encora_community/widgets/password_strength_indicator.dart';
-import 'package:encora_community/widgets/password_tips.dart';
-import 'package:encora_community/widgets/password_match_status.dart';
-import 'package:encora_community/widgets/alternative_login_buttons.dart';
+import 'package:encora_community/blocs/register/register_event.dart';
+import 'package:encora_community/data/services/auth_service.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:encora_community/blocs/register/register_bloc.dart';
+import 'package:encora_community/blocs/register/register_state.dart';
+import 'package:encora_community/widgets/buttons/custom_button.dart';
+import 'package:encora_community/widgets/password/password_match_status.dart';
+import 'package:encora_community/widgets/password/password_strength_indicator.dart';
+import 'package:encora_community/widgets/password/password_tips.dart';
+import 'package:encora_community/widgets/buttons/alternative_login_buttons.dart';
+import 'package:encora_community/widgets/custom_text_field.dart';
 
-class RegisterForm extends StatefulWidget {
+class RegisterForm extends StatelessWidget {
   const RegisterForm({super.key});
-
-  @override
-  State<RegisterForm> createState() => _RegisterFormState();
-}
-
-class _RegisterFormState extends State<RegisterForm> {
-  late final RegisterController _registerController;
-
-  @override
-  void initState() {
-    super.initState();
-    _registerController = RegisterController();
-  }
-
-  @override
-  void dispose() {
-    _registerController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final authService = AuthService();
 
-    return ChangeNotifierProvider.value(
-      value: _registerController,
-      child: Consumer<RegisterController>(
-        builder: (context, controller, _) {
+    return BlocProvider(
+      create: (_) => RegisterBloc(authService: authService),
+      child: BlocBuilder<RegisterBloc, RegisterState>(
+        builder: (context, state) {
+          final bloc = context.read<RegisterBloc>();
+          final nameController = TextEditingController(text: state.name);
+          final emailController = TextEditingController(text: state.email);
+          final passwordController = TextEditingController(
+            text: state.password,
+          );
+          final confirmController = TextEditingController(
+            text: state.confirmPassword,
+          );
+
           return Form(
-            key: controller.formKey,
-            onChanged: () => setState(() {}),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -53,9 +46,12 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                 ),
                 const SizedBox(height: 24),
+
+                // Name
                 CustomTextField(
-                  controller: controller.nameController,
                   label: 'Name',
+                  controller: nameController,
+                  onChanged: (value) => bloc.add(NameChanged(value)),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your name';
@@ -65,9 +61,11 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 const SizedBox(height: 16),
 
+                // Email
                 CustomTextField(
-                  controller: controller.emailController,
                   label: 'Email',
+                  controller: emailController,
+                  onChanged: (value) => bloc.add(EmailChanged(value)),
                   validator: (value) {
                     if (value == null || !value.contains('@')) {
                       return 'Enter a valid email';
@@ -77,45 +75,45 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 const SizedBox(height: 16),
 
+                // Password
                 CustomTextField(
-                  controller: controller.passwordController,
                   label: 'Password',
+                  controller: passwordController,
                   obscureText: true,
+                  onChanged: (value) => bloc.add(PasswordChanged(value)),
                   validator: (value) {
-                    final strength = controller.evaluatePasswordStrength(
-                      value ?? '',
-                    );
-                    if (strength != 'Strong') {
+                    if (state.passwordStrength != 'Strong') {
                       return 'Password must be strong';
                     }
                     return null;
                   },
-                  onChanged: controller.updatePasswordStrength,
                 ),
-                PasswordTips(password: controller.passwordController.text),
+                PasswordTips(password: state.password),
                 const SizedBox(height: 16),
 
+                // Confirm Password
                 CustomTextField(
-                  controller: controller.confirmPasswordController,
                   label: 'Confirm Password',
+                  controller: confirmController,
                   obscureText: true,
+                  onChanged: (value) => bloc.add(ConfirmPasswordChanged(value)),
                   validator: (value) {
-                    if (value != controller.passwordController.text) {
+                    if (value != state.password) {
                       return 'Passwords do not match';
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 8),
-
                 PasswordMatchStatus(
-                  password: controller.passwordController.text,
-                  confirmPassword: controller.confirmPasswordController.text,
+                  password: state.password,
+                  confirmPassword: state.confirmPassword,
                 ),
                 const SizedBox(height: 16),
 
+                // Dropdown
                 DropdownButtonFormField<String>(
-                  value: controller.userType,
+                  value: state.userType,
                   decoration: const InputDecoration(labelText: 'User Type'),
                   dropdownColor: theme.colorScheme.primary,
                   style: const TextStyle(color: Colors.black),
@@ -129,38 +127,32 @@ class _RegisterFormState extends State<RegisterForm> {
                   ],
                   onChanged: (value) {
                     if (value != null) {
-                      controller.userType = value;
+                      bloc.add(UserTypeChanged(value));
                     }
                   },
                 ),
 
                 const SizedBox(height: 24),
-
-                PasswordStrengthIndicator(
-                  strength: controller.passwordStrength,
-                ),
+                PasswordStrengthIndicator(strength: state.passwordStrength),
                 const SizedBox(height: 24),
 
+                // Botões de login alternativo
                 AlternativeLoginButtons(
-                  onGoogleLogin: () {}, // TODO: Google login
-                  onEncoraLogin: () {}, // TODO: Encora login
+                  onGoogleLogin: () {},
+                  onEncoraLogin: () {},
                 ),
                 const SizedBox(height: 24),
 
+                // Botão de confirmar
                 Row(
                   children: [
                     Expanded(
                       child: CustomButton(
                         onPressed:
-                            controller.formKey.currentState?.validate() ?? false
-                                ? () async {
-                                  await controller.registerUser(
-                                    context,
-                                    controller
-                                        .nameController
-                                        .text, // Passando o nome
-                                    "", // Você pode preencher o avatarUrl mais tarde ou deixá-lo em branco por enquanto
-                                  );
+                            state.passwordStrength == 'Strong' &&
+                                    state.password == state.confirmPassword
+                                ? () {
+                                  bloc.add(Submitted());
                                 }
                                 : null,
                         label: 'Confirm',
@@ -176,6 +168,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   ],
                 ),
                 const SizedBox(height: 12),
+
                 TextButton(
                   onPressed: () {
                     Navigator.of(

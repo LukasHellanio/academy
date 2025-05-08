@@ -1,7 +1,8 @@
-import 'package:encora_community/pages/register/register_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:encora_community/widgets/register_form.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:encora_community/blocs/register/register_bloc.dart';
+import 'package:encora_community/data/services/auth_service.dart';
+import 'package:encora_community/widgets/form/register_form.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -12,7 +13,7 @@ class RegisterPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.colorScheme.primary.withValues(
-        alpha: (0.3 * 255).toDouble(),
+        alpha: (0.03 * 255).toDouble(),
       ),
       body: Center(
         child: Container(
@@ -29,8 +30,8 @@ class RegisterPage extends StatelessWidget {
               ),
             ],
           ),
-          child: ChangeNotifierProvider<RegisterController>(
-            create: (_) => RegisterController(),
+          child: BlocProvider(
+            create: (_) => RegisterBloc(authService: AuthService()),
             child: const RegisterForm(),
           ),
         ),

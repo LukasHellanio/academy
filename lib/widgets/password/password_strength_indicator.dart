@@ -1,6 +1,6 @@
 // widgets/password_strength_indicator.dart
 import 'package:flutter/material.dart';
-import '../core/utils/password_utils.dart';
+import '../../core/utils/password_utils.dart';
 
 class PasswordStrengthIndicator extends StatelessWidget {
   final String strength;

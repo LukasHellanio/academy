@@ -1,5 +1,7 @@
+import 'package:encora_community/data/services/biometric_service.dart';
 import 'package:encora_community/pages/calendar/calendar_page.dart';
 import 'package:encora_community/pages/dashboard/dashboard_page.dart';
+import 'package:encora_community/pages/encora_map/encora_map_page.dart';
 import 'package:encora_community/pages/managers/managers_page.dart';
 import 'package:flutter/material.dart';
 import 'package:encora_community/widgets/drawer_options.dart';
@@ -19,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     DashboardPage(),
     ManagersPage(),
     CalendarPage(),
-    Center(child: Text('Permissions')),
+    EncoraMapPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -27,6 +29,19 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
     });
   }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _authenticate();
+  // }
+
+  // Future<void> _authenticate() async {
+  //   final didAuthenticate = await BiometricService.authenticate(context);
+  //   if (!didAuthenticate) {
+  //     Navigator.pushReplacementNamed(context, '/login');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

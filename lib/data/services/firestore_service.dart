@@ -28,6 +28,7 @@ class FirestoreService {
   }) async {
     try {
       await _firestore.collection('users').doc(uid).set({
+        'uid': uid,
         'name': name,
         'email': email,
         'avatarUrl': avatarUrl,
